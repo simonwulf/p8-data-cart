@@ -27,7 +27,7 @@ describe('cart-parser', function() {
     it('should parse the label section', function () {
         should.exist(cartData.label);
         cartData.label!.length.should.equal(128 * 128);
-        cartData.label!.every(byte => byte == 0xac).should.be.true;
+        cartData.label!.every((byte, i) => byte == (i % 2 == 0 ? 0xa : 0xc)).should.be.true;
     });
 
     it('should parse the gff section', function () {

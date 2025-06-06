@@ -1,0 +1,22 @@
+{
+  "name": "p8-data-cart",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "npm run build && mocha \"dist/test/**/*.spec.js\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/chai": "^5.2.2",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.15.24",
+    "chai": "^5.2.0",
+    "mocha": "^11.5.0",
+    "typescript": "^5.8.3"
+  },
+  "types": "dist/index.d.ts"
+}

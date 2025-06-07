@@ -1,6 +1,7 @@
 import { read } from "fs";
 import { CartData } from "./cart-data.js";
 import { cartBytesToSfxData, sfxDataToRuntimeBytes } from "./sfx.js";
+import { cartBytesToMusicData, musicDataToRuntimeBytes } from "./music.js";
 
 class StringReader {
     #string;
@@ -253,7 +254,9 @@ function readMusicSection(reader: StringReader): Uint8Array {
 
     skipWhitespace(reader);
 
-    return new Uint8Array(bytes);
+    const cartMusicBytes = new Uint8Array(bytes);
+    const musicData = cartBytesToMusicData(cartMusicBytes);
+    return musicDataToRuntimeBytes(musicData);
 }
 
 function readDecimal(reader: StringReader): number {

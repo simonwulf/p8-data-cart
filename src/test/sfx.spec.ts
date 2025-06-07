@@ -1,5 +1,4 @@
 import 'chai/register-should.js';
-import { parseCart } from '../cart-parser';
 import { cartBytesToSfxData, runtimeBytesToSfxData, sfxDataToCartBytes, sfxDataToRuntimeBytes } from '../sfx.js';
 
 const should = require('chai').should();

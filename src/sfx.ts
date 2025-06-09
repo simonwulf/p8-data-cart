@@ -122,7 +122,7 @@ export function sfxDataToCartBytes(sfxData: SfxData[]): Uint8Array {
         firstByte |= (sfx.filters.noiz ? 0x02 : 0x00);
         firstByte |= (sfx.filters.buzz ? 0x04 : 0x00);
         firstByte += sfx.filters.detune * 8;
-        firstByte += sfx.filters.reverb * 24
+        firstByte += sfx.filters.reverb * 24;
         firstByte += sfx.filters.dampen * 72;
 
         const secondByte = sfx.duration;

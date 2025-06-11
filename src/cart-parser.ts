@@ -296,7 +296,7 @@ function readExtendedHexadecimal(reader: StringReader, numberOfDigits: number): 
 
 export function parseCart(cartString: string): CartData {
     const reader = new StringReader(cartString);
-    const cartData: CartData = {};
+    const cartData = new CartData();
 
     skipHeader(reader);
     const version = readVersion(reader);
@@ -313,22 +313,22 @@ export function parseCart(cartString: string): CartData {
                 cartData.lua = readLuaSection(reader);
                 break;
             case '__gfx__':
-                cartData.gfx = readGfxSection(reader);
+                cartData.gfx.set(readGfxSection(reader));
                 break;
             case '__label__':
-                cartData.label = readLabelSection(reader);
+                cartData.label.set(readLabelSection(reader));
                 break;
             case '__gff__':
-                cartData.gff = readGffSection(reader);
+                cartData.gff.set(readGffSection(reader));
                 break;
             case '__map__':
-                cartData.map = readMapSection(reader);
+                cartData.map.set(readMapSection(reader));
                 break;
             case '__sfx__':
-                cartData.sfx = readSfxSection(reader);
+                cartData.sfx.set(readSfxSection(reader));
                 break;
             case '__music__':
-                cartData.music = readMusicSection(reader);
+                cartData.music.set(readMusicSection(reader));
                 break;
         }
     }

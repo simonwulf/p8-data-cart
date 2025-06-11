@@ -1,4 +1,5 @@
 import { CartData } from "./cart-data.js";
+import { musicDataToCartBytes, runtimeBytesToMusicData } from "./music.js";
 import { runtimeBytesToSfxData, sfxDataToCartBytes } from "./sfx.js";
 
 function writeHeader(): string {
@@ -80,9 +81,26 @@ function transposeByte(value: number): number {
     return (value & 0xf0) >> 4 | (value & 0x0f) << 4;
 }
 
-function writeDataSection(bytes: ArrayLike<number>, bytesPerLine: number, transposeBytes: boolean = false): string {
-    let sectionString = '';
+function trimEmptyLines(bytes: Uint8Array, bytesPerLine: number): Uint8Array {
+    let zeroTrailIndex = -1;
+    for (let i = bytes.length - 1; i >= 0; i--) {
+        if (bytes[i] !== 0) {
+            zeroTrailIndex = i + 1;
+            break;
+        }
+    }
 
+    if (zeroTrailIndex === -1)
+        return new Uint8Array(0);
+
+    const stopIndex = Math.ceil(zeroTrailIndex / bytesPerLine) * bytesPerLine;
+    return bytes.slice(0, stopIndex);
+}
+
+function writeDataSection(bytes: Uint8Array, bytesPerLine: number, transposeBytes: boolean = false): string {
+    bytes = trimEmptyLines(bytes, bytesPerLine);
+    
+    let sectionString = '';
     for (let i = 0; i < bytes.length; i++) {
         const byteValue = transposeBytes ? transposeByte(bytes[i]) : bytes[i];
         
@@ -95,9 +113,10 @@ function writeDataSection(bytes: ArrayLike<number>, bytesPerLine: number, transp
     return sectionString;
 }
 
-function writeDataSectionExtended(bytes: ArrayLike<number>, bytesPerLine: number): string {
-    let sectionString = '';
+function writeDataSectionExtended(bytes: Uint8Array, bytesPerLine: number): string {
+    bytes = trimEmptyLines(bytes, bytesPerLine);
 
+    let sectionString = '';
     for (let i = 0; i < bytes.length; i++) {
         const byteValue = bytes[i];
 
@@ -110,49 +129,57 @@ function writeDataSectionExtended(bytes: ArrayLike<number>, bytesPerLine: number
     return sectionString;
 }
 
+function writeSection(label: string, content: string): string {
+    if (!content)
+        return '';
+
+    return `__${label}__\n${content}`;
+}
+
 function writeLuaSection(luaCode: string): string {
-    return '__lua__\n' + luaCode;
+    return writeSection('lua', luaCode);
 }
 
-function writeGfxSection(bytes: ArrayLike<number>): string {
-    return '__gfx__\n' + writeDataSection(bytes, 64, true);
+function writeGfxSection(bytes: Uint8Array): string {
+    return writeSection('gfx', writeDataSection(bytes, 64, true));
 }
 
-function writeLabelSection(bytes: ArrayLike<number>): string {
-    return '__label__\n' + writeDataSectionExtended(bytes, 128);
+function writeLabelSection(bytes: Uint8Array): string {
+    return writeSection('label', writeDataSectionExtended(bytes, 128));
 }
 
-function writeGffSection(bytes: ArrayLike<number>): string {
-    return '__gff__\n' + writeDataSection(bytes, 128);
+function writeGffSection(bytes: Uint8Array): string {
+    return writeSection('gff', writeDataSection(bytes, 128));
 }
 
-function writeMapSection(bytes: ArrayLike<number>): string {
-    return '__map__\n' + writeDataSection(bytes, 128);
+function writeMapSection(bytes: Uint8Array): string {
+    return writeSection('map', writeDataSection(bytes, 128));
 }
 
-function writeSfxSection(bytes: ArrayLike<number>): string {
+function writeSfxSection(bytes: Uint8Array): string {
     const sfxData = runtimeBytesToSfxData(new Uint8Array(bytes));
     const cartBytes = sfxDataToCartBytes(sfxData);
-    return '__sfx__\n' + writeDataSection(cartBytes, 84);
+    return writeSection('sfx', writeDataSection(cartBytes, 84));
 }
 
-function writeMusicSection(bytes: ArrayLike<number>): string {
-    if (bytes.length % 5 !== 0)
-        throw Error('Music data length must be a multiple of 5');
+function writeMusicSection(bytes: Uint8Array): string {
+    bytes = trimEmptyLines(bytes, 4);
+    
+    const musicData = runtimeBytesToMusicData(bytes);
+    const cartBytes = musicDataToCartBytes(musicData);
 
-    let musicSectionString = '__music__';
-
-    for (let i = 0; i < bytes.length; i += 5) {
-        musicSectionString += '\n';
-        musicSectionString += writeByte(bytes[i + 0]);
-        musicSectionString += ' ';
-        musicSectionString += writeByte(bytes[i + 1]);
-        musicSectionString += writeByte(bytes[i + 2]);
-        musicSectionString += writeByte(bytes[i + 3]);
-        musicSectionString += writeByte(bytes[i + 4]);
+    let musicDataString = '';
+    for (let i = 0; i < cartBytes.length; i += 5) {
+        musicDataString += writeByte(cartBytes[i + 0]);
+        musicDataString += ' ';
+        musicDataString += writeByte(cartBytes[i + 1]);
+        musicDataString += writeByte(cartBytes[i + 2]);
+        musicDataString += writeByte(cartBytes[i + 3]);
+        musicDataString += writeByte(cartBytes[i + 4]);
+        musicDataString += '\n';
     }
     
-    return musicSectionString;
+    return writeSection('music', musicDataString);
 }
 
 export function writeCart(cartData: CartData): string {

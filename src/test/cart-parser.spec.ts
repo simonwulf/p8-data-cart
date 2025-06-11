@@ -19,38 +19,31 @@ describe('cart-parser', function() {
     });
 
     it('should parse the gfx section', function () {
-        should.exist(cartData.gfx);
-        cartData.gfx!.length.should.equal(256);
-        cartData.gfx!.every(byte => byte == 0xab).should.be.true;
+        cartData.gfx.slice(0, 256).every(byte => byte == 0xab).should.be.true;
+        cartData.gfx.slice(256).every(byte => byte == 0x00).should.be.true;
     });
 
     it('should parse the label section', function () {
-        should.exist(cartData.label);
-        cartData.label!.length.should.equal(128 * 128);
-        cartData.label!.every((byte, i) => byte == (i % 2 == 0 ? 0xa : 0xc)).should.be.true;
+        cartData.label.every((byte, i) => byte == (i % 2 == 0 ? 0xa : 0xc)).should.be.true;
     });
 
     it('should parse the gff section', function () {
-        should.exist(cartData.gff);
-        cartData.gff!.length.should.equal(256);
-        cartData.gff!.every(byte => byte == 0xad).should.be.true;
+        cartData.gff.slice(0, 256).every(byte => byte == 0xad).should.be.true;
+        cartData.gff.slice(256).every(byte => byte == 0x00).should.be.true;
     });
 
     it('should parse the map section', function () {
-        should.exist(cartData.map);
-        cartData.map!.length.should.equal(256);
-        cartData.map!.every(byte => byte == 0x01).should.be.true;
+        cartData.map.slice(0, 256).every(byte => byte == 0x01).should.be.true;
+        cartData.map.slice(256).every(byte => byte == 0x00).should.be.true;
     });
 
     it('should parse the sfx section', function () {
-        should.exist(cartData.sfx);
-        cartData.sfx!.length.should.equal(272);
-        cartData.sfx!.every(byte => byte == 0xaf).should.be.true;
+        cartData.sfx.slice(0, 272).every(byte => byte == 0xaf).should.be.true;
+        cartData.sfx.slice(272).every(byte => byte == 0x00).should.be.true;
     });
 
     it('should parse the music section', function () {
-        should.exist(cartData.music);
-        cartData.music!.length.should.equal(256);
-        cartData.music!.every(byte => byte == 0xae).should.be.true;
+        cartData.music.slice(0, 256).every(byte => byte == 0xae).should.be.true;
+        cartData.music.slice(256).every(byte => byte == 0x00).should.be.true;
     });
 });

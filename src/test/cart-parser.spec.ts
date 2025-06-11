@@ -24,7 +24,7 @@ describe('cart-parser', function() {
     });
 
     it('should parse the label section', function () {
-        cartData.label.every((byte, i) => byte == (i % 2 == 0 ? 0xa : 0xc)).should.be.true;
+        cartData.label.every((byte, i) => byte == (i % 2 == 0 ? 0xa : 0x8c)).should.be.true;
     });
 
     it('should parse the gff section', function () {

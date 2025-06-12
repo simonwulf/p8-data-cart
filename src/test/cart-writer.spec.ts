@@ -21,7 +21,6 @@ describe('cart-writer', () => {
             cartData.label.set(Array.from<number, number>({ length: 128 * 128 }, (_, i) => (i % 2) == 0 ? 0x0a : 0x8c));
 
             cartString = writeCart(cartData);
-            console.log(cartString);
         });
 
         it('should write the lua section as expected', () => {

@@ -13,8 +13,8 @@ describe('parser + writer integration', () => {
             const cartString = writeCart(cartData);
             const parsedCartData = parseCart(cartString);
 
-            const writtenCartDataString = Array.from(cartData.data).map(b => b.toString(16).padStart(2, '0')).join();
-            const parsedCartDataString = Array.from(parsedCartData.data).map(b => b.toString(16).padStart(2, '0')).join();
+            const writtenCartDataString = Array.from(cartData.data).map(b => b.toString(16).padStart(2, '0')).join('');
+            const parsedCartDataString = Array.from(parsedCartData.data).map(b => b.toString(16).padStart(2, '0')).join('');
 
             parsedCartDataString.should.equal(writtenCartDataString);
         }

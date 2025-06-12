@@ -8,13 +8,7 @@ export type SfxNote = {
 export type SfxData = {
     useTracker: boolean;
     isWaveform: boolean;
-    filters: {
-        noiz: boolean;
-        buzz: boolean;
-        detune: number; // 0-3
-        reverb: number; // 0-3
-        dampen: number; // 0-3
-    }
+    filters: number;
     duration: number;
     loopStart: number;
     loopEnd: number;
@@ -44,13 +38,7 @@ function readSfxFromCartBytes(bytes: Uint8Array): SfxData {
     return {
         useTracker: (firstByte & 0x01) !== 0,
         isWaveform: (thirdByte & 0x80) !== 0,
-        filters: {
-            noiz: (firstByte & 0x02) !== 0,
-            buzz: (firstByte & 0x04) !== 0,
-            detune: Math.floor(firstByte / 8) % 3,
-            reverb: Math.floor(secondByte / 24) % 3,
-            dampen: Math.floor(secondByte / 72) % 3
-        },
+        filters: firstByte & 0xfe,
         duration: secondByte,
         loopStart: thirdByte & 0x7f,
         loopEnd: fourthByte,
@@ -83,13 +71,7 @@ function readSfxFromRuntimeBytes(bytes: Uint8Array): SfxData {
     return {
         useTracker: (firstTailByte & 0x01) !== 0,
         isWaveform: (thirdTailByte & 0x80) !== 0,
-        filters: {
-            noiz: (firstTailByte & 0x02) !== 0,
-            buzz: (firstTailByte & 0x04) !== 0,
-            detune: Math.floor(firstTailByte / 8) % 3,
-            reverb: Math.floor(firstTailByte / 24) % 3,
-            dampen: Math.floor(firstTailByte / 72) % 3
-        },
+        filters: firstTailByte & 0xfe,
         duration: secondTailByte,
         loopStart: thirdTailByte & 0x7f,
         loopEnd: fourthTailByte,
@@ -117,14 +99,7 @@ export function sfxDataToCartBytes(sfxData: SfxData[]): Uint8Array {
         const sfx = sfxData[i];
         const baseIndex = i * 84;
 
-        let firstByte = 0x00;
-        firstByte |= (sfx.useTracker ? 0x01 : 0x00);
-        firstByte |= (sfx.filters.noiz ? 0x02 : 0x00);
-        firstByte |= (sfx.filters.buzz ? 0x04 : 0x00);
-        firstByte += sfx.filters.detune * 8;
-        firstByte += sfx.filters.reverb * 24;
-        firstByte += sfx.filters.dampen * 72;
-
+        const firstByte = (sfx.useTracker ? 0x01 : 0x00) | (sfx.filters & 0xfe);
         const secondByte = sfx.duration;
         const thirdByte = (sfx.isWaveform ? 0x80 : 0) | (sfx.loopStart & 0x7f);
         const fourthByte = sfx.loopEnd;
@@ -184,14 +159,7 @@ export function sfxDataToRuntimeBytes(sfxData: SfxData[]): Uint8Array {
 
         const tailOffset = sfxOffset + 64;
 
-        let firstTailByte = 0x00;
-        firstTailByte |= (sfx.useTracker ? 0x01 : 0x00);
-        firstTailByte |= (sfx.filters.noiz ? 0x02 : 0x00);
-        firstTailByte |= (sfx.filters.buzz ? 0x04 : 0x00);
-        firstTailByte += sfx.filters.detune * 8;
-        firstTailByte += sfx.filters.reverb * 24;
-        firstTailByte += sfx.filters.dampen * 72;
-
+        const firstTailByte = (sfx.useTracker ? 0x01 : 0x00) | (sfx.filters & 0xfe);
         const secondTailByte = sfx.duration & 0xFF;
         const thirdTailByte = (sfx.isWaveform ? 0x80 : 0) | (sfx.loopStart & 0x7F);
         const fourthTailByte = sfx.loopEnd & 0xFF;

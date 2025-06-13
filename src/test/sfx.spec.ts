@@ -21,7 +21,11 @@ describe('sfx', () => {
             const sfx = sfxData[0];
             sfx.useTracker.should.be.false;
             sfx.isWaveform.should.be.false;
-            sfx.filters.should.equal(64);
+            sfx.filters.noiz.should.be.false;
+            sfx.filters.buzz.should.be.false;
+            sfx.filters.detune.should.equal(2);
+            sfx.filters.reverb.should.equal(2);
+            sfx.filters.dampen.should.equal(0);
             sfx.duration.should.equal(65);
             sfx.loopStart.should.equal(66);
             sfx.loopEnd.should.equal(67);
@@ -42,7 +46,14 @@ describe('sfx', () => {
             const sfxData = [{
                 useTracker: false,
                 isWaveform: false,
-                filters: 64,
+                filters: {
+                    noiz: false,
+                    buzz: false,
+                    detune: 2,
+                    reverb: 2,
+                    dampen: 0,
+                    remainder: 0
+                },
                 duration: 65,
                 loopStart: 66,
                 loopEnd: 67,
@@ -82,7 +93,11 @@ describe('sfx', () => {
             const sfx = sfxData[0];
             sfx.useTracker.should.be.false;
             sfx.isWaveform.should.be.false;
-            sfx.filters.should.equal(64);
+            sfx.filters.noiz.should.be.false;
+            sfx.filters.buzz.should.be.false;
+            sfx.filters.detune.should.equal(2);
+            sfx.filters.reverb.should.equal(2);
+            sfx.filters.dampen.should.equal(0);
             sfx.duration.should.equal(65);
             sfx.loopStart.should.equal(66);
             sfx.loopEnd.should.equal(67);
@@ -103,7 +118,14 @@ describe('sfx', () => {
             const sfxData = [{
                 useTracker: false,
                 isWaveform: false,
-                filters: 64,
+                filters: {
+                    noiz: false,
+                    buzz: false,
+                    detune: 2,
+                    reverb: 2,
+                    dampen: 0,
+                    remainder: 0
+                },
                 duration: 65,
                 loopStart: 66,
                 loopEnd: 67,

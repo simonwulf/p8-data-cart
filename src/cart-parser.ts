@@ -335,5 +335,3 @@ export function parseCart(cartString: string): CartData {
 
     return cartData;
 }
-
-export default { parseCart };

@@ -7,9 +7,9 @@
     "test": "npm run build && mocha \"dist/test/**/*.spec.js\""
   },
   "keywords": [],
-  "author": "",
+  "author": "Simon Wulf",
   "license": "MIT",
-  "description": "",
+  "description": "Simple tools for generating Pico-8 data carts.",
   "devDependencies": {
     "@types/chai": "^5.2.2",
     "@types/mocha": "^10.0.10",

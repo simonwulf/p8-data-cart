@@ -133,7 +133,7 @@ function writeSection(label: string, content: string): string {
     if (!content)
         return '';
 
-    return `__${label}__\n${content}`;
+    return `__${label}__\n${content}\n`;
 }
 
 function writeLuaSection(luaCode: string): string {
@@ -189,25 +189,25 @@ export function writeCart(cartData: CartData): string {
     cartContents += writeVersion(39) + '\n';
 
     if (cartData.lua !== undefined)
-        cartContents += writeLuaSection(cartData.lua) + '\n';
+        cartContents += writeLuaSection(cartData.lua);
 
     if (cartData.gfx !== undefined)
-        cartContents += writeGfxSection(cartData.gfx) + '\n';
+        cartContents += writeGfxSection(cartData.gfx);
     
     if (cartData.label !== undefined)
-        cartContents += writeLabelSection(cartData.label) + '\n\n';
+        cartContents += writeLabelSection(cartData.label);
 
     if (cartData.gff !== undefined)
-        cartContents += writeGffSection(cartData.gff) + '\n';
+        cartContents += writeGffSection(cartData.gff);
 
     if (cartData.map !== undefined)
-        cartContents += writeMapSection(cartData.map) + '\n';
+        cartContents += writeMapSection(cartData.map);
 
     if (cartData.sfx !== undefined)
-        cartContents += writeSfxSection(cartData.sfx) + '\n';
+        cartContents += writeSfxSection(cartData.sfx);
 
     if (cartData.music !== undefined)
-        cartContents += writeMusicSection(cartData.music) + '\n';
+        cartContents += writeMusicSection(cartData.music);
 
     return cartContents;
 }

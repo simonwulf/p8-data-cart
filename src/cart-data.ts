@@ -1,4 +1,5 @@
 export class CartData {
+    private _version: number;
     private _lua: string;
     private _data: Uint8Array;
     private _gfx: Uint8Array;
@@ -9,6 +10,7 @@ export class CartData {
     private _music: Uint8Array;
 
     constructor() {
+        this._version = 42;
         this._lua = '';
         
         const buffer = new ArrayBuffer(0x4300);
@@ -21,6 +23,14 @@ export class CartData {
         this._sfx = new Uint8Array(buffer, 0x3200, 0x1100);
 
         this._label = new Uint8Array(128 * 128);
+    }
+
+    get version(): number {
+        return this._version;
+    }
+
+    set version(value: number) {
+        this._version = value;
     }
 
     get lua(): string {

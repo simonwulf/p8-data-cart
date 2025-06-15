@@ -298,7 +298,7 @@ export function parseCart(cartString: string): CartData {
     const cartData = new CartData();
 
     skipHeader(reader);
-    const version = readVersion(reader);
+    cartData.version = readVersion(reader);
 
     skipWhitespace(reader);
 

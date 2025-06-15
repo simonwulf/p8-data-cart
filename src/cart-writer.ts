@@ -186,7 +186,7 @@ export function writeCart(cartData: CartData): string {
     let cartContents = '';
 
     cartContents += writeHeader() + '\n';
-    cartContents += writeVersion(39) + '\n';
+    cartContents += writeVersion(cartData.version) + '\n';
 
     if (cartData.lua !== undefined)
         cartContents += writeLuaSection(cartData.lua);

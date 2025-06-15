@@ -10,6 +10,7 @@ describe('cart-writer', () => {
         before(() => {
             const cartData = new CartData();
 
+            cartData.version = 1337;
             cartData.lua = 'print("this is a test")\n';
 
             cartData.gfx.set(Array.from<number>({ length: 256 }).fill(0xab));
@@ -21,6 +22,10 @@ describe('cart-writer', () => {
             cartData.label.set(Array.from<number, number>({ length: 128 * 128 }, (_, i) => (i % 2) == 0 ? 0x0a : 0x8c));
 
             cartString = writeCart(cartData);
+        });
+
+        it('should write the version number as expected', () => {
+            cartString.should.match(/^version 1337$/m);
         });
 
         it('should write the lua section as expected', () => {

@@ -12,6 +12,10 @@ describe('cart-parser', function() {
         cartData = parseCart(cartString);
     });
 
+    it('should parse the version number', function () {
+        cartData.version.should.equal(1337);
+    });
+
     it('should parse the lua section', function () {
         cartData.lua!.should.be.a('string');
         cartData.lua!.should.include('print("this is a test")');

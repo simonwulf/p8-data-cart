@@ -29,31 +29,31 @@ describe('cart-writer', () => {
         });
 
         it('should write the lua section as expected', () => {
-            cartString.should.match(/__lua__\nprint\("this is a test"\)\n/);
+            cartString.should.match(/^__lua__\nprint\("this is a test"\)\n/m);
         });
 
         it('should write the gfx section as expected', () => {
-            cartString.should.match(/__gfx__\n((ba){64}\n){4}(?![0-9a-f])/);
+            cartString.should.match(/^__gfx__\n((ba){64}\n){4}(?![0-9a-f])/m);
         });
 
         it('should write the map section as expected', () => {
-            cartString.should.match(/__map__\n((01){128}\n){2}(?![0-9a-f])/);
+            cartString.should.match(/^__map__\n((01){128}\n){2}(?![0-9a-f])/m);
         });
 
         it('should write the gff section as expected', () => {
-            cartString.should.match(/__gff__\n((ad){128}\n){2}(?![0-9a-f])/);
+            cartString.should.match(/^__gff__\n((ad){128}\n){2}(?![0-9a-f])/m);
         });
 
         it('should write the sfx section as expected', () => {
-            cartString.should.match(/__sfx__\n(afafafaf(2f67a2f67a){16}\n){4}(?![0-9a-f])/);
+            cartString.should.match(/^__sfx__\n(afafafaf(2f67a2f67a){16}\n){4}(?![0-9a-f])/m);
         });
 
         it('should write the music section as expected', () => {
-            cartString.should.match(/__music__\n(0f 2e2e2e2e\n){64}(?![0-9a-f])/);
+            cartString.should.match(/^__music__\n(0f 2e2e2e2e\n){64}(?![0-9a-f])/m);
         });
 
         it('should write the label section as expected', () => {
-            cartString.should.match(/__label__\n((as){64}\n){128}(?![0-9a-v])/);
+            cartString.should.match(/^__label__\n((as){64}\n){128}(?![0-9a-v])/m);
         });
     });
 

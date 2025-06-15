@@ -1,4 +1,3 @@
-import { read } from "fs";
 import { CartData } from "./cart-data.js";
 import { cartBytesToSfxData, sfxDataToRuntimeBytes } from "./sfx.js";
 import { cartBytesToMusicData, musicDataToRuntimeBytes } from "./music.js";

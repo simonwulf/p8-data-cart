@@ -104,6 +104,8 @@ There are six properties of type `Uint8Array` that all share the same backing bu
   - Maps to runtime memory addresses `0x3200` - `0x4300`.
 
 ### Other Properties
+- `version`: number
+  - Describes what p8 format version this cart uses.
 - `lua`: string
   - Represents the cart's `__lua__` section, which contains the cart's lua script.
 - `label`: Uint8Array

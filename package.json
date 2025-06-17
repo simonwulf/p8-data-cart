@@ -18,5 +18,9 @@
     "mocha": "^11.5.0",
     "typescript": "^5.8.3"
   },
-  "types": "dist/index.d.ts"
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simonwulf/p8-data-cart.git"
+  }
 }

@@ -6,7 +6,7 @@
     "build": "tsc",
     "test": "npm run build && mocha \"dist/test/**/*.spec.js\""
   },
-  "keywords": [],
+  "keywords": [ "pico8", "pico-8" ],
   "author": "Simon Wulf",
   "license": "MIT",
   "description": "Simple tools for generating Pico-8 data carts.",

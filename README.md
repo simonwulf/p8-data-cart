@@ -59,7 +59,7 @@ writeFileSync('shapes.p8', writeCart(cartData));
 import { readFileSync, writeFileSync } from 'fs';
 import { CartData, parseCart, writeCart } from 'p8-data-cart';
 
-const payload = new Uint8Array([ 0 ]);
+const payload = new Uint8Array(readFileSync('payload.bin'));
 const resourceCartData = parseCart(readFileSync('resources.p8', 'utf-8'));
 
 if (payload.length > 0x3200)
@@ -75,12 +75,16 @@ writeFileSync('my-cart.p8', 'utf-8');
 ### Limitations
 The maximum payload size is limited to __16,75 KiB__ (0x4300 bytes), as this is the amount of memory that the cart gets mapped to when loaded by the Pico-8. The `lua` and `label` sections do not count towards this limitation.
 
-## `CartData`
+### Function: `parseCart`
+Deserializes a .p8 cart string into a `CartData` instance.
 
-__WIP:__
-Provides multiple views of runtime formatted data, `data` provides a continuous view of the full span, while the specific section
+### Function: `writeCart`
+Serializes a `CartData` instance into a .p8 cart string.
 
-### Data Views
+### Class: `CartData`
+The `CartData` class describes how your payload should be packed into a .p8 cart and, as such, where you'll find your data in memory once the cart is loaded.
+
+#### Data Views
 There are six properties of type `Uint8Array` that all share the same backing buffer. These typed arrays provide views of the cart's data payload. Each representing a specific range of the Pico-8's runtime memory.
 
 - `data`
@@ -103,7 +107,7 @@ There are six properties of type `Uint8Array` that all share the same backing bu
   - Represents the cart's `__sfx__` section, traditionally used to store sound effects.
   - Maps to runtime memory addresses `0x3200` - `0x4300`.
 
-### Other Properties
+#### Other Properties
 - `version`: number
   - Describes what p8 format version this cart uses.
 - `lua`: string
